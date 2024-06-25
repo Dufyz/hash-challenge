@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	// "log"
 	"math/rand"
+	// "os"
+	// "runtime/pprof"
 	"time"
 
 	"github.com/Dufyz/hash-challenge/file"
@@ -10,8 +13,14 @@ import (
 )
 
 func main() {
+	// f, err := os.Create("cpu.prof")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// pprof.StartCPUProfile(f)
+	// defer pprof.StopCPUProfile()
+
 	start := time.Now()
-	hashTable := hash.NewHashTable()
 
 	linesFromFile := file.ReadFileLines("RandomNumbers.txt")
 	if linesFromFile == nil {
@@ -19,26 +28,25 @@ func main() {
 		return
 	}
 
-	for _, num := range linesFromFile {
-		hashTable.Insert(num)
+	hashTable := hash.NewHashTable(len(linesFromFile))
+	for i, num := range linesFromFile {
+		hashTable.Insert(num, i)
 	}
 
-	foundedNumbers := make([]int, 0, 100)
-
+	randomNumbers := make([]int, 0, 100)
 	source := rand.NewSource(time.Now().UnixNano())
 	rng := rand.New(source)
 	for i := 0; i < 100; i++ {
-		randomNumber := rng.Intn(hash.HasTableSize)
-		if hashTable.Contains(randomNumber) {
-			foundedNumbers = append(foundedNumbers, randomNumber)
-		}
+		randomNumbers = append(randomNumbers, rng.Intn(hash.HasTableSize))
 	}
 
 	counter := 0
-	for _, number := range foundedNumbers {
-		index := file.FindValueIndex(linesFromFile, number)
-		defer fmt.Printf("O número %d foi encontrado na posição original %d\n", number, index+1)
-		counter++
+	for _, number := range randomNumbers {
+		index := hashTable.IndexOf(number)
+		if index != -1 {
+			fmt.Printf("O número %d foi encontrado na posição original %d\n", number, index+1)
+			counter++
+		}
 	}
 
 	duration := time.Since(start)
