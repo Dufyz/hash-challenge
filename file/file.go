@@ -22,10 +22,7 @@ func ReadFileLines(filename string) []int {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		num, err := strconv.Atoi(line)
-		if err != nil {
-			continue
-		}
+		num, _ := strconv.Atoi(line)
 		numbers = append(numbers, num)
 	}
 
