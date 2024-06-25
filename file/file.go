@@ -35,12 +35,3 @@ func ReadFileLines(filename string) []int {
 
 	return numbers
 }
-
-func FindValueIndex(numbers []int, target int) int {
-	for index, number := range numbers {
-		if number == target {
-			return index
-		}
-	}
-	return -1
-}
