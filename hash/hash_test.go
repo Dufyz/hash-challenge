@@ -7,11 +7,11 @@ import (
 )
 
 func TestHashTable(t *testing.T) {
-	ht := hash.NewHashTable()
+	ht := hash.NewHashTable(1)
 
 	// Teste para verificar a inserção e a existência de um número
 	testNumber := 12345
-	ht.Insert(testNumber)
+	ht.Insert(testNumber, 0)
 	if !ht.Contains(testNumber) {
 		t.Errorf("HashTable.Contains() = false; want true for number %d", testNumber)
 	}
@@ -24,12 +24,12 @@ func TestHashTable(t *testing.T) {
 }
 
 func TestHashTableMultipleInserts(t *testing.T) {
-	ht := hash.NewHashTable()
+	ht := hash.NewHashTable(5)
 
 	// Inserir múltiplos números e verificar a existência
 	numbersToInsert := []int{100, 200, 300, 400, 500}
-	for _, num := range numbersToInsert {
-		ht.Insert(num)
+	for i, num := range numbersToInsert {
+		ht.Insert(num, i)
 		if !ht.Contains(num) {
 			t.Errorf("HashTable.Contains() = false; want true for number %d", num)
 		}
