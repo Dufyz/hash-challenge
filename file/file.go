@@ -14,7 +14,12 @@ func ReadFileLines(filename string) []int {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	numbers := make([]int, 0, 1000)
+	numbers := make([]int, 0, 1000000)
+
+	const maxCapacity = 64 * 1024 * 20
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+
 	for scanner.Scan() {
 		line := scanner.Text()
 		num, err := strconv.Atoi(line)
