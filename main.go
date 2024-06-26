@@ -2,10 +2,7 @@ package main
 
 import (
 	"fmt"
-	// "log"
 	"math/rand"
-	// "os"
-	// "runtime/pprof"
 	"time"
 
 	"github.com/Dufyz/hash-challenge/file"
@@ -13,13 +10,6 @@ import (
 )
 
 func main() {
-	// f, err := os.Create("cpu.prof")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// pprof.StartCPUProfile(f)
-	// defer pprof.StopCPUProfile()
-
 	start := time.Now()
 
 	linesFromFile := file.ReadFileLines("RandomNumbers.txt")
@@ -37,7 +27,7 @@ func main() {
 	source := rand.NewSource(time.Now().UnixNano())
 	rng := rand.New(source)
 	for i := 0; i < 100; i++ {
-		randomNumbers = append(randomNumbers, rng.Intn(hash.HasTableSize))
+		randomNumbers = append(randomNumbers, rng.Intn(hash.HashTableSize))
 	}
 
 	counter := 0

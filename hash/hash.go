@@ -1,34 +1,37 @@
 package hash
 
 const (
-	HasTableSize = 10000
+	HashTableSize = 256
 )
 
 type HashTable struct {
-	table map[int]int
+	table [HashTableSize]bool
+	index map[int]int
 }
 
-func NewHashTable(len int) *HashTable {
+func NewHashTable(size int) *HashTable {
 	return &HashTable{
-		table: make(map[int]int, len),
+		index: make(map[int]int, size),
 	}
 }
 
-func (h HashTable) Insert(number int, i int) {
-	h.table[number] = i
+func (h *HashTable) Insert(number, i int) {
+	if number >= 0 && number < HashTableSize {
+		h.table[number] = true
+		h.index[number] = i
+	}
 }
 
 func (h *HashTable) Contains(number int) bool {
-	_, exists := h.table[number]
-	return exists
+	if number >= 0 && number < HashTableSize {
+		return h.table[number]
+	}
+	return false
 }
 
 func (h *HashTable) IndexOf(number int) int {
-	n, exists := h.table[number]
-
-	if !exists {
-		return -1
+	if index, exists := h.index[number]; exists {
+		return index
 	}
-
-	return n
+	return -1
 }
